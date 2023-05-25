@@ -1,0 +1,50 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+  \usetikzlibrary{positioning}
+  \usetikzlibrary{arrows.meta}
+  \usetikzlibrary{arrows, shapes, trees, positioning, decorations.markings, patterns}
+  \usetikzlibrary{backgrounds}
+  \usetikzlibrary[topaths]
+  % \usetikzlibrary[graphdrawing] %% only luatex
+% \usepackage[active,tightpage]{preview}
+\usepackage{tikz-bpmn}
+\usepackage{bpmn-gateways}
+\usepackage{bpmn-events}
+
+\usepackage{fontspec}
+  \setmainfont[Ligatures=TeX]{Nimbus Roman No9 L}
+
+\usepackage{graphicx}
+\graphicspath{{}{./assets/}}
+
+\begin{document}
+
+\begin{tikzpicture}[node distance=2cm]
+
+  \tikzset{
+    ->,
+    >=stealth',
+    font={\fontsize{11pt}{12}\selectfont}
+  }
+
+  \node[task] (custA) {\includegraphics{account_box} \\ Customer};
+  \node[task, right=of custA] (tpp) {Third Party Provider};
+  \node[task, above right=of tpp] (api1) {Open API};
+  \node[task, right=of api1] (bank1) {\includegraphics{account_balance} \\ Bank A};
+  \node[task, right=of tpp] (api2) {Open API};
+  \node[task, right=of api2] (bank2) {\includegraphics{account_balance} \\ Bank B};
+  \node[task, below right=of tpp] (api3) {Open API};
+  \node[task, right=of api3] (bank3) {\includegraphics{account_balance} \\ Bank C};
+  % \draw (custA) edge[bend right, below] node{\colorbox{black}{\textcolor{white}{\textbf{1}}} initiation} (tpp);
+  \draw (custA) edge[bend right, above] node[opacity=0.5]{\includegraphics{iphone}} (tpp);
+  \draw (tpp) edge[above] node{} (api1);
+  \draw (api1) edge[above] node{} (bank1);
+  \draw (tpp) edge[above] node{} (api2);
+  \draw (api2) edge[above] node{} (bank2);
+  \draw (tpp) edge[above] node{} (api3);
+  \draw (api3) edge[above] node{} (bank3);
+  % \node[task,right=of bankA, fill=black!40, minimum size=2cm] (ce) {Service \\ Provider};
+\end{tikzpicture}
+
+\end{document}

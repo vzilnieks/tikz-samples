@@ -1,0 +1,55 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+  \usetikzlibrary{positioning}
+  \usetikzlibrary{arrows.meta}
+  \usetikzlibrary{arrows, shapes, trees, positioning, decorations.markings, patterns}
+  \usetikzlibrary{backgrounds}
+  \usetikzlibrary[topaths]
+  % \usetikzlibrary[graphdrawing] %% only luatex
+% \usepackage[active,tightpage]{preview}
+\usepackage{tikz-bpmn}
+\usepackage{bpmn-gateways}
+\usepackage{bpmn-events}
+
+\usepackage{fontspec}
+  \setmainfont[Ligatures=TeX]{Nimbus Roman No9 L}
+
+\usepackage{graphicx}
+\graphicspath{{}{./assets/}}
+
+\begin{document}
+
+% https://blog.kubovy.eu/2013/10/04/latex-tikz-bpmn-2-0-gateways/
+
+\begin{tikzpicture}[node distance=2.5cm]
+
+  \tikzset{
+    ->,
+    >=stealth',
+    font={\fontsize{9pt}{12}\selectfont}
+  }
+
+  \node[task] (custA) {\includegraphics{account_box} \\ Customer \\ Debtor};
+  \node[task, right=of custA, opacity=0.3] (bc) {\includegraphics{bc}};
+  \node[task, right=of custA, fill=white!40] (bankA) at (0.5, 0) {\includegraphics{account_balance} \\Bank A};
+  \draw (bankA) edge[loop left, pos=0.9] node{\colorbox{black}{\textcolor{white}{\textbf{2}}} AML/CTF} (bankA); 
+  \draw (custA) edge[bend right, below, pos=0.4] node{\colorbox{black}{\textcolor{white}{\textbf{1}}} Initiation} (bankA);
+  \draw (custA) edge[bend right, above, pos=0.4] node[opacity=0.5]{\includegraphics{iphone}} (bankA);
+  \node[right=of custA] (a1) {};
+  \node[above right=of bankA] (a2) at (2.9, 0.7) {};
+  \node[below right=of bankA] (a3) at (2.9, -0.7) {};
+  \node[below right=of bankA] (b1) at (2.9, -0.7) {};
+  \node[task, below right=of bankA, fill=white!40] (b2) at (2.1, -0.3) {Bank \\ Authorized};
+  \draw (a1) edge[bend right] node{\colorbox{black}{\textcolor{white}{\textbf{3}}} Gossip of Transaction} (a2);
+  \draw (a1) edge[bend left] node{\colorbox{black}{\textcolor{white}{\textbf{3}}} Gossip of Transaction} (a3);
+  \node[task, right=of bankA, fill=white!40] (bankB) at (7, 0) {\includegraphics{account_balance} \\ Bank M};
+  \draw (bankB) edge[loop right, pos=0.1] node{\colorbox{black}{\textcolor{white}{\textbf{5}}} AML/CTF} (bankB); 
+  \draw (b1) edge[bend left] node{\colorbox{black}{\textcolor{white}{\textbf{4}}} Gossip of Confirmed Block} (bankB);
+  \node[task, right=of bankB] (custB) {\includegraphics{account_box} \\ Merchant \\ Creditor};
+  \draw (bankB) edge[bend right, below, pos=0.6] node{\colorbox{black}{\textcolor{white}{\textbf{6}}} Notification} (custB);
+  \draw (bankB) edge[bend right, above, pos=0.6] node[opacity=0.5]{\includegraphics{iphone}} (custB);
+
+\end{tikzpicture}
+
+\end{document}

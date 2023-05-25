@@ -1,0 +1,55 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+  \usetikzlibrary{positioning}
+  \usetikzlibrary{arrows.meta}
+  \usetikzlibrary{arrows, shapes, trees, positioning, decorations.markings, patterns}
+  \usetikzlibrary{backgrounds}
+  \usetikzlibrary[topaths]
+  % \usetikzlibrary[graphdrawing] %% only luatex
+% \usepackage[active,tightpage]{preview}
+\usepackage{tikz-bpmn}
+\usepackage{bpmn-gateways}
+\usepackage{bpmn-events}
+
+\usepackage{fontspec}
+  \setmainfont[Ligatures=TeX]{Nimbus Roman No9 L}
+
+\usepackage{graphicx}
+\graphicspath{{}{./assets/}}
+
+\begin{document}
+
+% https://blog.kubovy.eu/2013/10/04/latex-tikz-bpmn-2-0-gateways/
+
+\begin{tikzpicture}[node distance=1cm]
+
+  \tikzset{
+    ->,
+    >=stealth',
+    font={\fontsize{11pt}{12}\selectfont}
+  }
+
+  \node[task] (custA) {\includegraphics{account_box} \\ Debtor};
+  \node[task, below right=of custA] (bankA) {\includegraphics{account_balance} \\ Debtor Agent};
+  \draw (custA) edge[bend right, below, left=0.2] node{} (bankA);
+  \node[task,right=of bankA, minimum size=2cm] (ce) {Certified \\ Authority};
+  % \draw (ce) edge[loop above] node{\colorbox{black}{\textcolor{white}{\textbf{3}}} validation} (ce); 
+  % \draw (bankA) edge[bend left, above] node{\colorbox{black}{\textcolor{white}{\textbf{2}}} send} (ce);
+  \draw[sequence,->] (bankA) -- (ce);
+  % \draw (ce) edge[bend left, below] node{\colorbox{black}{\textcolor{white}{\textbf{7}}} confirm} (bankA);
+  \node[task,right=of ce] (bankB) {\includegraphics{account_balance} \\ Creditor Agent};
+  % \draw (ce) edge[bend left, above] node{\colorbox{black}{\textcolor{white}{\textbf{4}}} forward} (bankB);
+  \draw[sequence,->] (ce) -- (bankB);
+  % \draw (bankB) edge[above] node{\colorbox{black}{\textcolor{white}{\textbf{5}}} accept} (ce);
+  % \draw (ce) edge[bend right, below] node{\colorbox{black}{\textcolor{white}{\textbf{7}}} confirm} (bankB);
+  \node[task, below left=of ce] (accountA) {Account of Bank A};
+  \node[task, below right=of ce] (accountB) {Account of Bank B};
+  \node[task, above right=of bankB] (custB) {\includegraphics{account_box} \\ Creditor};
+  \draw (bankB) edge[bend right, below, right=0.1] node{} (custB);
+  \draw (ce) edge[bend left, above, left=0.3] node{} (accountA);
+  \draw (accountA) edge[above] node{Settlement} (accountB);
+  \draw (accountA) edge[below] node{\textbf{COMMIT}} (accountB);
+\end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,92 @@
+\documentclass{standalone}
+\usepackage{tikz}
+  \usetikzlibrary{positioning}
+  \usetikzlibrary{arrows.meta}
+  \usetikzlibrary{arrows, shapes, trees, positioning, decorations.markings, patterns}
+  \usetikzlibrary{backgrounds}
+  \usetikzlibrary[topaths]
+  \usetikzlibrary{calc}
+  \usetikzlibrary{backgrounds,fit,decorations.pathreplacing}
+\usepackage{fontspec}
+  \setmainfont[Ligatures=TeX]{Nimbus Roman No9 L}
+
+\newcount\mycount
+
+\begin{document}
+\begin{tikzpicture}[
+% Gates and symbols style
+    and/.style={and gate US,thick,draw,fill=red!60,rotate=90,
+		anchor=east,xshift=-1mm},
+    or/.style={or gate US,thick,draw,fill=blue!60,rotate=90,
+		anchor=east,xshift=-1mm},
+    be/.style={circle,thick,draw,fill=green!60,anchor=north,
+		minimum width=0.7cm},
+    tr/.style={buffer gate US,thick,draw,fill=purple!60,rotate=90,
+		anchor=east,minimum width=0.8cm},
+% Label style
+    label distance=3mm,
+    every label/.style={blue},
+% Event style
+    event/.style={rectangle,thick,draw,grow=up,fill=yellow!20,text width=1cm,
+		text centered,font=\sffamily,anchor=north},
+% Children and edges style
+    % edge from parent/.style={very thick,draw=black!70},
+    % edge from parent path={(\tikzparentnode.south) -- ++(0,-1.05cm)
+	% 		-| (\tikzchildnode.north)},
+    % level 1/.style={sibling distance=7cm,level distance=1.4cm,
+	% 		growth parent anchor=south,nodes=event},
+    % level 2/.style={sibling distance=7cm},
+    % level 3/.style={sibling distance=6cm},
+    % level 4/.style={sibling distance=3cm}
+%%  For compatability with PGF CVS add the absolute option:
+%   absolute
+    ]
+  \tikzstyle{surround} = [fill=blue!10,thick,draw=black,rounded corners=2mm]
+
+  \draw [thick, gray, dotted, shift={(0.25,0.25)}] (-2, -1) grid [xstep=0,ystep=1.25] (7, 5.5);
+  \node (b0) [event] {$B_n$} [grow=up]
+    child {
+      node (b1) [event] {$B_{n+1}$}
+      child {
+	node (b21) [midway,event] {$B_{n+2}$}
+      }
+      child {
+	node (b22) [event] {$B_{n+2}$}
+	child {
+	  node (b3) [event] {$B_{n+3}$}
+	  child {
+	    node (b41) [event] {$B_{n+4}$}
+	  }
+	  child {
+	    node (b42) [event] {$B_{n+4}$}
+	  }
+	  child {
+	    node (b43) [event] {$B_{n+4}$}
+	  }
+	}
+      }
+      child {
+	node (b23) [midway,event] {$B_{n+2}$}
+      }
+    };
+
+  \node (c2) at (5, 2.1) {Voting $V_{n+2}$};
+  \node (c4) at (5, 4.5) {Voting $V_{n+4}$};
+% \node (v1) [rectangle,fill=black!40,minimum width=3cm] at (0, 2.2) {44444};
+\draw[red,ultra thick] (b21.south west) -- ($(b21.north east)-(0pt,0pt)$);
+\draw[red,ultra thick] ($(b21.north west)-(0pt,0pt)$) -- (b21.south east);
+\draw[red,ultra thick] (b23.south west) -- ($(b23.north east)-(0pt,0pt)$);
+\draw[red,ultra thick] ($(b23.north west)-(0pt,0pt)$) -- (b23.south east);
+\draw[red,ultra thick] (b41.south west) -- ($(b41.north east)-(0pt,0pt)$);
+\draw[red,ultra thick] ($(b41.north west)-(0pt,0pt)$) -- (b41.south east);
+\draw[red,ultra thick] (b43.south west) -- ($(b43.north east)-(0pt,0pt)$);
+\draw[red,ultra thick] ($(b43.north west)-(0pt,0pt)$) -- (b43.south east);
+\begin{pgfonlayer}{background} 
+  \node[surround] (background) [fit = (b23) (c2)] {};
+\end{pgfonlayer}
+\begin{pgfonlayer}{background} 
+  \node[surround] (background) [fit = (b43) (c4)] {};
+\end{pgfonlayer}
+
+\end{tikzpicture}
+\end{document}

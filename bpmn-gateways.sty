@@ -1,0 +1,228 @@
+% BPMN Gateways Tikz LaTeX package.
+%
+% (c) 2013-2014 Jan Kubovy <jan@kubovy.eu>
+% Institute for Applied Knowledge Processing (FAW)
+% Johannes Kepler University in Linz
+% http://www.faw.jku.at
+%
+\ProvidesPackage{packages/bpmn-gateways}
+  [2014/03/11 v2.0 BPMN Gateways Tikz LaTeX package]
+
+\usepackage{ifthen}
+
+\makeatletter
+
+\newcommand{\bpmn@gw@InheritFromDiamond}{%
+  \inheritsavedanchors[from=diamond]%
+  \inheritanchorborder[from=diamond]%
+  \inheritanchor[from=diamond]{center}%
+  \inheritanchor[from=diamond]{north}%
+  \inheritanchor[from=diamond]{north east}%
+  \inheritanchor[from=diamond]{east}%
+  \inheritanchor[from=diamond]{south east}%
+  \inheritanchor[from=diamond]{south}%
+  \inheritanchor[from=diamond]{south west}%
+  \inheritanchor[from=diamond]{west}%
+  \inheritanchor[from=diamond]{north west}%
+  % etc...
+  \inheritbackgroundpath[from=diamond]%
+}
+
+\newcommand{\bpmn@gw@BasicCircle}[1][reset]{
+  \pgfutil@tempdima=\pgf@xc%
+  \pgfutil@tempdima=0.6\pgfutil@tempdima%
+  \pgfpathcircle{\pgfpointorigin}{\pgfutil@tempdima}%
+  \pgfusepath{draw}%
+  \ifthenelse{\equal{#1}{reset}}{%
+    \pgfsetdash{}{0}%
+  }{}%
+}
+
+\newcommand{\bpmn@gw@IntermediateCircle}{
+  \bpmn@gw@BasicCircle[keep]%
+  %
+  \pgfutil@tempdima=0.8\pgfutil@tempdima%
+  \pgfpathcircle{\pgfpointorigin}{\pgfutil@tempdima}%
+  \pgfusepath{draw}%
+  \pgfsetdash{}{0}%
+}
+
+\newcommand{\bpmn@gw@Gateway}{%
+  \pgf@process{\outernortheast}%
+  \pgf@xc=\pgf@x%
+  \pgf@yc=\pgf@y%
+  \pgfmathsetlength{\pgf@xa}{\pgfkeysvalueof{/pgf/outer xsep}}%
+  \pgfmathsetlength{\pgf@ya}{\pgfkeysvalueof{/pgf/outer ysep}}%
+  \advance\pgf@xc by-1.414213\pgf@xa%
+  \advance\pgf@yc by-1.414213\pgf@ya%
+  \pgfpathmoveto{\pgfqpoint{\pgf@xc}{0pt}}%
+  \pgfpathlineto{\pgfqpoint{0pt}{\pgf@yc}}%
+  \pgfpathlineto{\pgfqpoint{-\pgf@xc}{0pt}}%
+  \pgfpathlineto{\pgfqpoint{0pt}{-\pgf@yc}}%
+  \pgfpathclose%
+  \pgfusepath{draw}%
+}
+
+\newcommand{\bpmn@gw@GatewayJoin}{%
+  \pgfsetlinewidth{2pt}%
+  \pgfpathmoveto{\pgfqpoint{\pgf@xa}{\pgf@yc}}%
+  \pgfpathlineto{\pgfqpoint{\pgf@xc}{\pgf@ya}}%
+  \pgfpathlineto{\pgfqpoint{\pgf@xa}{-\pgf@yc}}%
+  \pgfusepath{draw}%
+  \pgfsetlinewidth{0.5pt}%
+}
+
+\newcommand{\bpmn@gw@GatewaySplit}{%
+  \pgfsetlinewidth{2pt}
+  \pgfpathmoveto{\pgfqpoint{\pgf@xa}{\pgf@yc}}%
+  \pgfpathlineto{\pgfqpoint{-\pgf@xc}{\pgf@ya}}%
+  \pgfpathlineto{\pgfqpoint{\pgf@xa}{-\pgf@yc}}%
+  \pgfusepath{draw}%
+  \pgfsetlinewidth{0.5pt}%
+}
+
+\pgfqkeys{/tikz}{
+  direction/.initial=none,
+  type/.initial=none
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% P A R A L L E L   G A T E W A Y %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\bpmn@gw@ParallelGateway}{%
+  \advance\pgf@xc by -.5\pgf@xc%
+  \advance\pgf@yc by -.5\pgf@yc%
+  \pgfsetlinewidth{2pt}
+  \pgfpathmoveto{\pgfqpoint{\pgf@xc}{0pt}}%
+  \pgfpathlineto{\pgfqpoint{-\pgf@xc}{0pt}}%
+  \pgfpathmoveto{\pgfqpoint{0pt}{\pgf@yc}}%
+  \pgfpathlineto{\pgfqpoint{0pt}{-\pgf@yc}}%
+  \pgfusepath{draw}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% E X C L U S I V E   G A T E W A Y %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\bpmn@gw@ExclusiveGateway}{%
+  \advance\pgf@xc by -.5\pgf@xc%
+  \pgfsetlinewidth{2pt}%
+  \pgfpathmoveto{\pgfqpoint{ 0.6\pgf@xc}{0.8484\pgf@xc}}%
+  \pgfpathlineto{\pgfqpoint{-0.6\pgf@xc}{-0.8484\pgf@xc}}%
+  \pgfpathmoveto{\pgfqpoint{-0.6\pgf@xc}{0.8484\pgf@xc}}%
+  \pgfpathlineto{\pgfqpoint{ 0.6\pgf@xc}{-0.8484\pgf@xc}}%
+  \pgfusepath{draw}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% I N C L U S I V E   G A T E W A Y %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\bpmn@gw@InclusiveGateway}{%
+  \pgfsetlinewidth{2pt}%
+  \pgfutil@tempdima=\pgf@xc%
+  \pgfutil@tempdima=0.5\pgfutil@tempdima%
+  \pgfpathcircle{\pgfpointorigin}{\pgfutil@tempdima}%
+  \pgfusepath{draw}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% C O M P L E X   G A T E W A Y %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\bpmn@gw@ComplexGateway}{%
+  \advance\pgf@xc by -.5\pgf@xc%
+  \advance\pgf@yc by -.5\pgf@yc%
+  \pgfsetlinewidth{2pt}%
+  \pgfpathmoveto{\pgfqpoint{\pgf@xc}{0pt}}%
+  \pgfpathlineto{\pgfqpoint{-\pgf@xc}{0pt}}%
+  \pgfpathmoveto{\pgfqpoint{0pt}{\pgf@yc}}%
+  \pgfpathlineto{\pgfqpoint{0pt}{-\pgf@yc}}%
+  \pgfpathmoveto{\pgfqpoint{0.707\pgf@xc}{0.707\pgf@yc}}%
+  \pgfpathlineto{\pgfqpoint{-0.707\pgf@xc}{-0.707\pgf@yc}}%
+  \pgfpathmoveto{\pgfqpoint{-0.707\pgf@xc}{0.707\pgf@yc}}%
+  \pgfpathlineto{\pgfqpoint{0.707\pgf@xc}{-0.707\pgf@yc}}%
+  \pgfusepath{draw}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% E V E N T   B A S E D   E X C L U S I V E   G A T E W A Y %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\bpmn@gw@EventBasedExclusiveGateway}{%
+  \pgf@xc=0.7\pgfutil@tempdima%
+  \pgf@yc=0.7\pgfutil@tempdima%
+  \advance\pgf@xc by-0.8\pgf@xc%
+  \pgfpathmoveto{\pgfpoint{0}{\pgf@yc}}%
+  \pgfpathlineto{\pgfpoint{-0.951056516\pgf@yc}{0.309016994\pgf@yc}}%
+  \pgfpathlineto{\pgfpoint{-0.587785252\pgf@yc}{-0.809016994\pgf@yc}}%
+  \pgfpathlineto{\pgfpoint{0.587785252\pgf@yc}{-0.809016994\pgf@yc}}%
+  \pgfpathlineto{\pgfpoint{0.951056516\pgf@yc}{0.309016994\pgf@yc}}%
+  \pgfpathlineto{\pgfpoint{0}{\pgf@yc}}%
+  \pgfpathlineto{\pgfpoint{-0.951056516\pgf@yc}{0.309016994\pgf@yc}}%
+  \pgfusepath{draw}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% E V E N T   B A S E D   P A R A L L E L   I N S T A N T I A T I N G   G A T E W A Y %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\bpmn@gw@ParallelMultiplePicture}{%
+  \pgf@xc=0.15\pgfutil@tempdima%
+  \pgf@yc=0.7\pgfutil@tempdima%
+  \pgfpathmoveto{\pgfpoint{\pgf@xc}{\pgf@yc}}%
+  \pgfpathlineto{\pgfpoint{\pgf@xc}{\pgf@xc}}%
+  \pgfpathlineto{\pgfpoint{\pgf@yc}{\pgf@xc}}%
+  \pgfpathlineto{\pgfpoint{\pgf@yc}{-\pgf@xc}}%
+  \pgfpathlineto{\pgfpoint{\pgf@xc}{-\pgf@xc}}%
+  \pgfpathlineto{\pgfpoint{\pgf@xc}{-\pgf@yc}}%
+  \pgfpathlineto{\pgfpoint{-\pgf@xc}{-\pgf@yc}}%
+  \pgfpathlineto{\pgfpoint{-\pgf@xc}{-\pgf@xc}}%
+  \pgfpathlineto{\pgfpoint{-\pgf@yc}{-\pgf@xc}}%
+  \pgfpathlineto{\pgfpoint{-\pgf@yc}{\pgf@xc}}%
+  \pgfpathlineto{\pgfpoint{-\pgf@xc}{\pgf@xc}}%
+  \pgfpathlineto{\pgfpoint{-\pgf@xc}{\pgf@yc}}%
+  \pgfpathlineto{\pgfpoint{\pgf@xc}{\pgf@yc}}%
+  \pgfpathlineto{\pgfpoint{\pgf@xc}{\pgf@xc}}%
+  \pgfusepath{draw}%
+}
+
+%%%%%%%%%%%%%%%%%
+% G A T E W A Y %
+%%%%%%%%%%%%%%%%%
+\newcommand{\gateway}[2]{%
+  \bpmn@gw@InheritFromDiamond%
+  \beforebackgroundpath{%
+    \bpmn@gw@Gateway%
+    %
+    \ifthenelse{\equal{#2}{join}}{\bpmn@gw@GatewayJoin}{%
+    \ifthenelse{\equal{#2}{merge}}{\bpmn@gw@GatewayJoin}{%
+    \ifthenelse{\equal{#2}{split}}{\bpmn@gw@GatewaySplit}{%
+    \ifthenelse{\equal{#2}{fork}}{\bpmn@gw@GatewaySplit}{%
+    \ifthenelse{\equal{#2}{mixed}}{\bpmn@gw@GatewayJoin \bpmn@gw@GatewaySplit}{}}}}}%
+    %
+    \ifthenelse{\equal{#1}{parallel}}{\bpmn@gw@ParallelGateway}{%
+    \ifthenelse{\equal{#1}{exclusive}}{\bpmn@gw@ExclusiveGateway}{%
+    \ifthenelse{\equal{#1}{inclusive}}{\bpmn@gw@InclusiveGateway}{%
+    \ifthenelse{\equal{#1}{complex}}{\bpmn@gw@ComplexGateway}{%
+    \ifthenelse{\equal{#1}{event-based}}{\bpmn@gw@IntermediateCircle \bpmn@gw@EventBasedExclusiveGateway}{%
+    \ifthenelse{\equal{#1}{exclusive event-based}}{\bpmn@gw@IntermediateCircle \bpmn@gw@EventBasedExclusiveGateway}{%
+    \ifthenelse{\equal{#1}{instantiating event-based}}{\bpmn@gw@BasicCircle \bpmn@gw@EventBasedExclusiveGateway}{%
+    \ifthenelse{\equal{#1}{exclusive instantiating event-based}}{\bpmn@gw@BasicCircle \bpmn@gw@EventBasedExclusiveGateway}{%
+    \ifthenelse{\equal{#1}{parallel event-based}}{\bpmn@gw@BasicCircle \bpmn@gw@ParallelMultiplePicture}{%
+    \ifthenelse{\equal{#1}{parallel instantiating event-based}}{\bpmn@gw@BasicCircle \bpmn@gw@ParallelMultiplePicture}{}}}}}}}}}}%
+  }%
+}
+
+\pgfdeclareshape{Gateway}{\gateway{\pgfkeysvalueof{/tikz/type}}{\pgfkeysvalueof{/tikz/direction}}}
+\pgfdeclareshape{ParallelGateway}{\gateway{parallel}{\pgfkeysvalueof{/tikz/direction}}}
+\pgfdeclareshape{ExclusiveGateway}{\gateway{exclusive}{\pgfkeysvalueof{/tikz/direction}}}
+\pgfdeclareshape{InclusiveGateway}{\gateway{inclusive}{\pgfkeysvalueof{/tikz/direction}}}
+\pgfdeclareshape{ComplexGateway}{\gateway{complex}{\pgfkeysvalueof{/tikz/direction}}}
+\pgfdeclareshape{EventBasedGateway}{\gateway{event-based}{\pgfkeysvalueof{/tikz/direction}}}
+\pgfdeclareshape{ExclusiveEventBasedGateway}{\gateway{exclusive event-based}{\pgfkeysvalueof{/tikz/direction}}}
+\pgfdeclareshape{InstantiatingEventBasedGateway}{\gateway{instantiating event-based}{\pgfkeysvalueof{/tikz/direction}}}
+\pgfdeclareshape{ExclusiveInstantiatingEventBasedGateway}{\gateway{exclusive instantiating event-based}{\pgfkeysvalueof{/tikz/direction}}}
+\pgfdeclareshape{ParallelEventBasedGateway}{\gateway{parallel event-based}{\pgfkeysvalueof{/tikz/direction}}}
+\pgfdeclareshape{ParallelInstantiatingEventBasedGateway}{\gateway{parallel instantiating event-based}{\pgfkeysvalueof{/tikz/direction}}}
+
+\makeatother
+
+\endinput
+%%
+%% End of file `bpmn.sty'.

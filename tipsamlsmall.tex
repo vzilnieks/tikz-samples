@@ -1,0 +1,54 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+  \usetikzlibrary{positioning}
+  \usetikzlibrary{arrows.meta}
+  \usetikzlibrary{arrows, shapes, trees, positioning, decorations.markings, patterns}
+  \usetikzlibrary{backgrounds}
+  \usetikzlibrary[topaths]
+  % \usetikzlibrary[graphdrawing] %% only luatex
+% \usepackage[active,tightpage]{preview}
+\usepackage{tikz-bpmn}
+\usepackage{bpmn-gateways}
+\usepackage{bpmn-events}
+
+\usepackage{fontspec}
+  \setmainfont[Ligatures=TeX]{Nimbus Roman No9 L}
+
+\usepackage{graphicx}
+\graphicspath{{}{./assets/}}
+
+\begin{document}
+
+\begin{tikzpicture}[node distance=1.5cm]
+
+  \tikzset{
+    ->,
+    >=stealth',
+    font={\fontsize{6pt}{10}\selectfont},
+    color=gray
+  }
+
+  \node[task] (custA) {\includegraphics{account_box}};
+  \node[task, below left=of custA] (bankA) {\includegraphics{account_balance}};
+  \draw (bankA) edge[loop above,color=black] node{\colorbox{black}{\textcolor{white}{\textbf{2}}} \textbf{AML/CTF compliance}} (bankA); 
+  \draw (custA) edge[bend left, below, left=0.2] node{\colorbox{gray}{\textcolor{white}{\textbf{1}}} Initiation} (bankA);
+  \node[task,below=of bankA, minimum size=1cm] (ce) {SP};
+  \draw (ce) edge[loop right] node{\colorbox{gray}{\textcolor{white}{\textbf{4}}} Validation} (ce); 
+  \draw (bankA) edge[bend left, above] node{\colorbox{gray}{\textcolor{white}{\textbf{3}}} Send} (ce);
+  \draw (ce) edge[bend left, below] node{\colorbox{gray}{\textcolor{white}{\textbf{9}}} Confirm} (bankA);
+  \node[task,below=of ce] (bankB) {\includegraphics{account_balance}};
+  \draw (bankB) edge[loop below,color=black] node{\colorbox{black}{\textcolor{white}{\textbf{6}}} \textbf{AML/CTF compliance}} (bankB); 
+  \draw (ce) edge[bend left, below] node{\colorbox{gray}{\textcolor{white}{\textbf{5}}} Forward} (bankB);
+  \draw (bankB) edge[above] node{\colorbox{gray}{\textcolor{white}{\textbf{7}}} Accept} (ce);
+  \draw (ce) edge[bend right, below] node{\colorbox{gray}{\textcolor{white}{\textbf{9}}} Confirm} (bankB);
+  \node[task, right=of bankA] (accountA) {Account of Bank A};
+  \node[task, right=of bankB] (accountB) {Account of Bank B};
+  \node[task, below=of accountB] (custB) {\includegraphics{account_box}};
+  \draw (bankB) edge[bend right, below, right=0.1] node{\colorbox{gray}{\textcolor{white}{\textbf{11}}} Notification} (custB);
+  \draw (ce) edge[below] node{\colorbox{gray}{\textcolor{white}{\textbf{8}}} Reserve Amount} (accountA);
+  \draw (accountA) edge[below] node{\colorbox{gray}{\textcolor{white}{\textbf{10}}} Liquidity Position Increase} (accountB);
+
+\end{tikzpicture}
+
+\end{document}

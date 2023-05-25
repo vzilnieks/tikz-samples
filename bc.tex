@@ -1,0 +1,28 @@
+\documentclass{standalone}
+% \documentclass[crop,tikz,convert=pdf2svg]{standalone}[2012/04/13]
+% \documentclass[tikz,convert={outfile=\jobname.svg}]{standalone}
+\usepackage{tikz}
+  \usetikzlibrary{positioning}
+  \usetikzlibrary{arrows.meta}
+  \usetikzlibrary{arrows, shapes, trees, positioning, decorations.markings, patterns}
+  \usetikzlibrary{backgrounds}
+  \usetikzlibrary[topaths]
+\usepackage{fontspec}
+  \setmainfont[Ligatures=TeX]{Nimbus Roman No9 L}
+
+\newcount\mycount
+
+\begin{document}
+
+\begin{tikzpicture}[transform shape,line width=0.2pt]
+  \foreach \x in {1,...,8}{%
+    \pgfmathparse{(\x-1)*45+floor(\x/9)*22.5}
+    \node[draw,circle,inner sep=0.15cm] (N-\x) at (\pgfmathresult:3.4cm) [thick] {};
+  } 
+  \foreach \x [count=\xi from 1] in {2,...,8}{%
+    \foreach \y in {\x,...,8}{%
+        \path (N-\xi) edge[-] (N-\y);
+  }
+}
+\end{tikzpicture}
+\end{document}
