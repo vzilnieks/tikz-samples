@@ -1,0 +1,53 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning}
+
+\begin{document}
+\begin{tikzpicture}[
+  block/.style={rectangle, draw, align=center, rounded corners=5mm, minimum width=2cm, minimum height=1cm},
+  filledBlock/.style={block, fill=blue!20},
+  arrow/.style={draw, -latex},
+  dashedarrow/.style={draw, dashed, -latex}
+]
+
+% Define nodes
+\node[filledBlock] (debtor) {Debtor};
+\node[filledBlock, right=of debtor] (debtoragent) {Debtor Agent};
+\node[block, right=of debtoragent] (smartcontract) {Smart Contract};
+\node[filledBlock, right=of smartcontract] (creditoragent) {Creditor Agent};
+\node[block, right=of creditoragent] (check) {Check};
+\node[block, right=of check] (response) {Response};
+\node[block, right=of response] (final) {Final State};
+\node[filledBlock, right=of final] (creditor) {Creditor};
+
+% Connect nodes
+\draw [arrow] (debtor) -- (debtoragent);
+  \draw [dashedarrow] (debtoragent) -- (smartcontract) node[midway, above] {$Tx_1$};
+  \draw [dashedarrow] (smartcontract) -- (creditoragent) node[midway, above] {Log};
+  \draw [dashedarrow] (creditoragent) -- (check);
+  \draw [dashedarrow] (check) -- (response);
+  \draw [arrow] (response) -- (final) node[midway, above] {$Tx_3$};
+\draw [arrow] (final) -- (creditor);
+
+% Add curved arrows with labels
+\draw [arrow, bend left=30] (response) to node[midway, above] {Accept/Decline $Tx_2$} (smartcontract);
+\draw [arrow, bend left=30] (smartcontract) to node[midway, above] {Return} (debtoragent);
+\draw [arrow, bend left=30] (smartcontract) to node[midway, above] {Unlock} (creditoragent);
+  \draw [dotted,bend left=20] (smartcontract) to node[midway, above] {} (final);
+
+% Define timeline
+\coordinate (timeline_start) at ([yshift=-2cm]debtor.south);
+\coordinate (timeline_end) at ([yshift=-2cm]creditor.south);
+\draw[dotted, -latex] (timeline_start) -- (timeline_end) node[right] {t, s};
+
+% Define marked period
+\coordinate (marked_start) at ([yshift=-2cm]debtoragent.south);
+\coordinate (marked_end) at ([yshift=-2cm]final.south);
+\draw[thick, red, -latex] (marked_start) -- (marked_end) node[midway, below=3mm] {Time Slot};
+
+% Connect marked period with flowchart
+\draw [dotted] (debtoragent.south) -- (marked_start);
+\draw [dotted] (final.south) -- (marked_end);
+
+\end{tikzpicture}
+\end{document}

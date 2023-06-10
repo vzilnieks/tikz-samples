@@ -1,0 +1,57 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning}
+
+\begin{document}
+\begin{tikzpicture}[
+  block/.style={rectangle, draw, align=center, rounded corners=5mm, minimum width=2cm, minimum height=1cm},
+  filledBlock/.style={block, fill=blue!20},
+  arrow/.style={draw, -latex},
+  dashedarrow/.style={draw, dashed, -latex}
+]
+
+  \tikzset{
+    font={\fontsize{8pt}{8}\selectfont}
+  }
+
+% Define nodes
+\node[filledBlock] (debtor) {Debtor};
+\node[filledBlock, right=of debtor] (debtoragent) {Debtor Agent};
+\node[block, right=of debtoragent] (sp) {Service Provider};
+\node[filledBlock, right=of sp] (creditoragent) {Creditor Agent};
+\node[block, right=of creditoragent] (check) {Check};
+\node[block, right=of check] (response) {Response};
+\node[block, right=of response] (wait) {Wait};
+\node[filledBlock, right=of wait] (creditor) {Creditor};
+
+% Connect nodes
+\draw [arrow] (debtor) -- (debtoragent);
+  \draw [dashedarrow] (debtoragent) -- (sp) node[midway, above] {pacs.008};
+  \draw [dashedarrow] (sp) -- (creditoragent) node[midway, above] {pacs.008};
+  \draw [dashedarrow] (creditoragent) -- (check);
+  \draw [dashedarrow] (check) -- (response);
+  \draw [dashedarrow] (response) -- (wait);
+\draw [arrow] (wait) -- (creditor);
+
+% Add curved arrows with labels
+\draw [arrow, bend left=30] (response) to node[midway, above] {Accept/Decline pacs.002} (sp);
+\draw [arrow, bend left=30] (sp) to node[midway, above] {Commit} (debtoragent);
+\draw [arrow, bend left=30] (sp) to node[midway, above] {Commit} (creditoragent);
+  \draw [dotted,bend left=20] (sp) to node[midway, above] {} (wait);
+
+% Define timeline
+\coordinate (timeline_start) at ([yshift=-2cm]debtor.south);
+\coordinate (timeline_end) at ([yshift=-2cm]creditor.south);
+\draw[dotted, -latex] (timeline_start) -- (timeline_end) node[right] {t, s};
+
+% Define marked period
+\coordinate (marked_start) at ([yshift=-2cm]debtoragent.south);
+\coordinate (marked_end) at ([yshift=-2cm]wait.south);
+\draw[thick, red, -latex] (marked_start) -- (marked_end) node[midway, below=3mm] {Time Slot};
+
+% Connect marked period with flowchart
+\draw [dotted] (debtoragent.south) -- (marked_start);
+\draw [dotted] (wait.south) -- (marked_end);
+
+\end{tikzpicture}
+\end{document}
