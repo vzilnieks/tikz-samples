@@ -1,0 +1,31 @@
+\documentclass[tikz,border=3.14mm]{standalone}
+\usetikzlibrary{shapes,arrows,positioning,calc}
+
+\begin{document}
+\begin{tikzpicture}[
+    block/.style={rectangle, draw=blue!60, fill=blue!5, line width=1pt},
+    line/.style={draw, -latex', line width=2pt},
+    node distance=3cm
+]
+
+% bidirectional arrow style line
+\tikzset{bi/.style={line width=2pt, <->, >=latex'}}
+
+% Nodes
+\node[block] (blockchain1) at (-3,3) {\includegraphics[width=2.5cm]{bc}};
+\node[block] (blockchain2) at (3,3) {\includegraphics[width=2.5cm]{bc}};
+\node[block] (blockchain3) at (-3,-3) {\includegraphics[width=2.5cm]{bc}};
+\node[block] (blockchain4) at (3,-3) {\includegraphics[width=2.5cm]{bc}};
+\node[circle, draw=black!50, fill=black!10, inner sep=0pt, minimum size=1cm] (relayer) at (0,0) {Relayer};
+\node[circle, draw=black!50, fill=black!10, inner sep=0pt, minimum size=1cm] (wallet) at (5,0) {Merchant};
+\draw[bi] (relayer) -- (wallet);
+\draw[style=dashed, line width=2pt] (wallet) -- (blockchain4);
+
+% Lines
+\draw[line, <->] (blockchain1) -- (relayer);
+\draw[line, <->] (blockchain2) -- (relayer);
+\draw[line, <->] (blockchain3) -- (relayer);
+\draw[line, <->] (blockchain4) -- (relayer);
+
+\end{tikzpicture}
+\end{document}

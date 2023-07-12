@@ -1,0 +1,31 @@
+\documentclass[tikz,border=3.14mm]{standalone}
+\usetikzlibrary{shapes,arrows,positioning}
+\usepackage{tikzpeople}
+
+\begin{document}
+\begin{tikzpicture}[
+    % rounded corners,
+    block/.style={rectangle, draw=blue!60, fill=blue!5, line width=1pt, minimum width=2cm, minimum height=1cm, text centered},
+    human/.style={businessman, shirt=black, hat=black, hair=black, skin=white, tie=black, draw, fill=blue!20},
+    store/.style={rectangle, chamfered rectangle xsep=2cm, draw, fill=orange!20},
+    % bidirectional arrow
+    arrow/.style={>=stealth,draw, -latex', line width=1pt},
+      % thick,<->,>=stealth,draw, -latex', line width=1pt},
+    node distance=2cm
+]
+
+% Nodes
+\node[human, label=below:Customer] (customer) {};
+\node[block, right=2cm of customer] (pisp) {PISP};
+\node[block, right=2cm of pisp] (api) {API};
+\node[block, right=2cm of api] (bank) {\includegraphics[width=0.5cm]{assets/account_balance}};
+\node[store, above right=1cm and 1cm of pisp, label=above:Merchant] (merchant) {};
+
+% Lines
+\draw[arrow] (customer) -- (pisp);
+\draw[arrow] (pisp) -- (api);
+\draw[arrow] (api) -- (bank);
+\draw[arrow] (pisp) -- (merchant);
+
+\end{tikzpicture}
+\end{document}

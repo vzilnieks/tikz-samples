@@ -1,0 +1,65 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+  \usetikzlibrary{positioning}
+  \usetikzlibrary{arrows.meta}
+  \usetikzlibrary{arrows, shapes, trees, positioning, decorations.markings, patterns}
+  \usetikzlibrary{backgrounds}
+  \usetikzlibrary[topaths]
+  % \usetikzlibrary[graphdrawing] %% only luatex
+% \usepackage[active,tightpage]{preview}
+\usepackage{tikz-bpmn}
+\usepackage{bpmn-gateways}
+\usepackage{bpmn-events}
+
+\usepackage{fontspec}
+  % \setmainfont[Ligatures=TeX]{Nimbus Roman No9 L}
+
+\usepackage{graphicx}
+\graphicspath{{}{./assets/}}
+
+\begin{document}
+
+% https://blog.kubovy.eu/2013/10/04/latex-tikz-bpmn-2-0-gateways/
+
+\begin{tikzpicture}[node distance=2.5cm]
+
+  \tikzset{
+    ->,
+    >=stealth',
+  }
+
+  \node[task] (custA) {\includegraphics{account_box} \\ Customer \\ (Debtor)};
+  \node[task, right=of custA, opacity=0.3] (bc1) {\includegraphics{bc}};
+  \node[task, right=of custA, fill=white] (bankA) at (0.5, 0) {Client};
+  \draw (custA) edge[bend right, below, pos=0.4] node{\colorbox{black}{\textcolor{white}{\textbf{1}}} Initiation} (bankA);
+  \node[right=of custA] (a1) {};
+  \node[above right=of bankA] (a2) at (2.9, 0.7) {};
+  \node[below right=of bankA] (a3) at (2.9, -0.7) {};
+  \node[below right=of bankA] (b1) at (2.9, -0.7) {};
+  \node[task, below right=of bankA, fill=white!40] (b2) at (2.1, -0.3) {Block \\ Commiter};
+  \draw (bankA) edge[bend right] node{\colorbox{black}{\textcolor{white}{\textbf{2}}} Gossip of Transaction} (a2);
+  \draw (bankA) edge[bend left] node{\colorbox{black}{\textcolor{white}{\textbf{2}}} Gossip of Transaction} (b2);
+  \node[task, right=of bankA, fill=white!40] (scAB) at (6.2, 0) {\includegraphics[scale=0.04]{smartc} \\ Smart Contract \\ Locked funds};
+  \draw (b2) edge[bend left, above] node{\colorbox{black}{\textcolor{white}{\textbf{3}}} Committed Block} (scAB);
+  \node[task, right=of scAB, fill=white!40] (rel) {Relayer};
+  \node[task, right=of rel, opacity=0.3] (bc2) {\includegraphics{bc}};
+  \node[task, right=of rel, fill=white!40] (scBA) at (14.3, 0) {\includegraphics[scale=0.04]{smartc} \\ Smart Contract \\ Verify, Mint};
+  \node[task, right=of scBA, fill=white!40] (bankB) at (22.5, 0) {Client};
+  \node[task, right=of bankB] (custB) {\includegraphics{account_box} \\ Merchant \\ (Creditor)};
+  \draw (bankB) edge[bend right, below, pos=0.6] node{\colorbox{black}{\textcolor{white}{\textbf{13}}} Notification} (custB);
+  \draw (scAB) edge[bend left,above] node{Block A Sync} (rel); 
+  \draw (scAB) edge[above] node{\colorbox{black}{\textcolor{white}{\textbf{8}}} Proof of Lock} (rel); 
+  \draw (rel) edge[bend left,below] node{Block B Sync} (scAB);
+  \draw (rel) edge[above] node{\colorbox{black}{\textcolor{white}{\textbf{9}}} Proof of Lock} (scBA);
+  \draw (rel) edge[bend left,above] node{Block A Sync} (scBA); 
+  \draw (scBA) edge[bend left,below] node{Block B Sync} (rel); 
+  \node[above right=of scBA] (c1) at (17.2, 0.7) {};
+  \draw (scBA) edge[bend right] node{\colorbox{black}{\textcolor{white}{\textbf{11}}} Gossip of Transaction} (c1);
+  \draw (c1) edge[bend left, above] node{\colorbox{black}{\textcolor{white}{\textbf{12}}} Committed Block} (bankB);
+
+  \draw (scBA) edge[loop below] node{\colorbox{black}{\textcolor{white}{\textbf{10}}} Check Proof of Lock} (scBA); 
+
+\end{tikzpicture}
+
+\end{document}
