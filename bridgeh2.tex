@@ -13,6 +13,7 @@
 \usepackage{bpmn-events}
 
 \usepackage{fontspec}
+\setmainfont{Times New Roman}
   % \setmainfont[Ligatures=TeX]{Nimbus Roman No9 L}
 
 \usepackage{graphicx}
@@ -45,7 +46,7 @@
   \node[task, right=of scAB, fill=white!40] (rel) {Relayer};
   \node[task, right=of rel, opacity=0.3] (bc2) {\includegraphics{bc}};
   \node[task, right=of rel, fill=white!40] (scBA) at (14.3, 0) {\includegraphics[scale=0.04]{smartc} \\ Smart Contract \\ Burn};
-  \node[task, right=of scBA, fill=white!40] (bankB) at (22.5, 0) {Client};
+  \node[task, right=of scBA, fill=white!40] (bankB) at (21, 0) {Client};
   \node[task, right=of bankB] (custB) {\includegraphics{account_box} \\ Merchant \\ (Debtor)};
   \draw (custB) edge[bend left, below, pos=0.6] node{\colorbox{black}{\textcolor{white}{\textbf{1}}} Initiation} (bankB);
   \draw (scAB) edge[bend left,above] node{Block A Sync} (rel); 
@@ -55,9 +56,9 @@
   \draw (scBA) edge[above] node{\colorbox{black}{\textcolor{white}{\textbf{4}}} Proof of Burn} (rel);
   \draw (rel) edge[bend left,above] node{Block A Sync} (scBA); 
   \draw (scBA) edge[bend left,below] node{Block B Sync} (rel); 
-  \node[above right=of scBA] (c1) at (17.2, 0.7) {};
+  \node[above right=of scBA] (c1) at (17, 0.7) {};
   \draw (c1) edge[bend right] node{\colorbox{black}{\textcolor{white}{\textbf{3}}} Committed Block} (scBA);
-  \draw (bankB) edge[bend left, above] node{\colorbox{black}{\textcolor{white}{\textbf{2}}} Pending Transaction} (c1);
+  \draw (bankB) edge[bend right, above] node{\colorbox{black}{\textcolor{white}{\textbf{2}}} Pending Transaction} (c1);
 
 
 \end{tikzpicture}
