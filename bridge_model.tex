@@ -1,10 +1,16 @@
 \documentclass[tikz,border=3.14mm]{standalone}
 \usetikzlibrary{shapes,arrows,positioning,calc}
 
+\usepackage{tikzpeople}
+\usepackage{tikz-bpmn}
+\usepackage{bpmn-gateways}
+\usepackage{bpmn-events}
+
 \begin{document}
 \begin{tikzpicture}[
     block/.style={rectangle, draw=blue!60, fill=blue!5, line width=1pt},
-    line/.style={draw, -latex', line width=2pt},
+    line/.style={draw, -latex'}, %, line width=2pt},
+    human/.style={businessman, shirt=black, hat=black, hair=black, skin=white, tie=black, draw, fill=blue!20},
     node distance=3cm
 ]
 
@@ -12,13 +18,21 @@
 \tikzset{bi/.style={line width=2pt, <->, >=latex'}}
 
 % Nodes
-\node[block] (blockchain1) at (-3,3) {\includegraphics[width=2.5cm]{bc}};
-\node[block] (blockchain2) at (3,3) {\includegraphics[width=2.5cm]{bc}};
-\node[block] (blockchain3) at (-3,-3) {\includegraphics[width=2.5cm]{bc}};
-\node[block] (blockchain4) at (3,-3) {\includegraphics[width=2.5cm]{bc}};
+\node[task] (blockchain1) at (-3,3) {\includegraphics[width=2.5cm]{bc}};
+\node[task] (blockchain2) at (3,3) {\includegraphics[width=2.5cm]{bc}};
+\node[task, opacity=0.3] (blockchain3) at (-3,-3) {\includegraphics[width=2.5cm]{bc}};
+\node[task] (blockchain4) at (3,-3) {\includegraphics[width=2.5cm]{bc}};
 \node[circle, draw=black!50, fill=black!10, inner sep=0pt, minimum size=1cm] (relayer) at (0,0) {Merchant};
+  \node[human, left of=relayer] (customer) {};
+  \node[task, fill=white!40] at (-4, -2) (accountP) {Wallet P};
+  \node[task, fill=white!40] at (-2, 2) (accountA) {Wallet A};
+  \node[task, fill=white!40] at (2, 2) (accountB) {Wallet B};
+  \node[task, fill=white!40] at (-2, -2) (accountC) {Wallet C};
+  \node[task, fill=white!40] at (2, -2) (accountD) {Wallet D};
 
 % Lines
+  \draw (customer) edge[above] node[]{UI} (relayer);
+\draw[line, <->] (customer) -- (accountP);
 \draw[line, <->] (blockchain1) -- (relayer);
 \draw[line, <->] (blockchain2) -- (relayer);
 \draw[line, <->] (blockchain3) -- (relayer);

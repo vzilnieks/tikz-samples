@@ -1,6 +1,9 @@
 \documentclass[tikz,border=3.14mm]{standalone}
-\usetikzlibrary{shapes,arrows,positioning}
+\usetikzlibrary{shapes,arrows,positioning,calc}
 \usepackage{tikzpeople}
+\usepackage{tikz-bpmn}
+\usepackage{bpmn-gateways}
+\usepackage{bpmn-events}
 
 \begin{document}
 \begin{tikzpicture}[
@@ -8,6 +11,7 @@
     block/.style={rectangle, draw=blue!60, fill=blue!5, line width=1pt, minimum width=2cm, minimum height=1cm, text centered},
     human/.style={businessman, shirt=black, hat=black, hair=black, skin=white, tie=black, draw, fill=blue!20},
     store/.style={rectangle, chamfered rectangle xsep=2cm, draw, fill=orange!20},
+    line/.style={draw, -latex'}, % line width=2pt},
     % bidirectional arrow
     arrow/.style={>=stealth,draw, -latex', line width=1pt},
     % api block style
@@ -20,22 +24,22 @@
 
 % Nodes
 \node[human, label=below:Customer] (customer) {};
-\node[store, above of=customer, label=above:Merchant] (merchant) {};
+\node[task, above of=customer] (merchant) {Merchant};
 \node[pisp, right=2cm of customer] (pisp) {Payment Initiation Service Provider};
 \node[api, right=2cm of pisp] (api) {API};
-\node[block, right=2cm of api] (bank) {\includegraphics[width=0.5cm]{assets/account_balance}};
-\node[block, above right of=api] (bank2) {\includegraphics[width=0.5cm]{assets/account_balance}};
-\node[block, below right of=api] (bank3) {\includegraphics[width=0.5cm]{assets/account_balance}};
-\node[block, left of=merchant] (bankP) {\includegraphics[width=0.5cm]{assets/account_balance}};
+\node[task, right=2cm of api] (bank) {\includegraphics[width=0.5cm]{assets/account_balance} \\ Bank 2 };
+\node[task, above right of=api] (bank2) {\includegraphics[width=0.5cm]{assets/account_balance} \\ Bank 1 };
+\node[task, below right of=api] (bank3) {\includegraphics[width=0.5cm]{assets/account_balance} \\ Bank 3};
+\node[task, above of=pisp] (bankP) {\includegraphics[width=0.5cm]{assets/account_balance} \\ Bank M};
 
 % Lines
 \draw[arrow] (customer) -- (pisp);
-\draw[arrow] (pisp) -- (api);
-\draw[arrow] (api) -- (bank);
-\draw[arrow] (api) -- (bank2);
-\draw[arrow] (api) -- (bank3);
+\draw[line, <->] (pisp) -- (api);
+\draw[line, <->] (api) -- (bank);
+\draw[line, <->] (api) -- (bank2);
+\draw[line, <->] (api) -- (bank3);
 \draw[arrow] (pisp) -- (bankP);
-\draw[arrow] (bankP) -- (merchant);
+\draw[line, <->] (bankP) -- (merchant);
 
 \end{tikzpicture}
 \end{document}
