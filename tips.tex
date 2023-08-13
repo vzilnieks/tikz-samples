@@ -13,7 +13,7 @@
 \usepackage{bpmn-events}
 
 \usepackage{fontspec}
-  \setmainfont[Ligatures=TeX]{Nimbus Roman No9 L}
+  \setmainfont[Ligatures=TeX]{Times New Roman}
 
 % \usepackage{neuralnetwork}
 % \usepackage{verbatim}
@@ -39,7 +39,7 @@
   \tikzset{
     ->,
     >=stealth',
-    font={\fontsize{11pt}{12}\selectfont}
+    font={\fontsize{10pt}{12}\selectfont}
   }
 
   \node[task] (custA) {\includegraphics{account_box} \\ Customer A \\ Debtor};
@@ -67,8 +67,8 @@
   \node[task, above right=of bankB] (custB) {\includegraphics{account_box} \\ Customer B \\ Creditor};
   \draw (bankB) edge[bend right, below, right=0.1] node{\colorbox{black}{\textcolor{white}{\textbf{9}}} Notification} (custB);
   \draw (bankB) edge[bend right, above, pos=0.6] node[opacity=0.5]{\includegraphics{iphone}} (custB);
-  \draw (ce) edge[bend left, above, left=0.3] node{\colorbox{black}{\textcolor{white}{\textbf{6}}} Reserve Amount} (accountA);
-  \draw (accountA) edge[below] node{\colorbox{black}{\textcolor{white}{\textbf{8}}} Liquidity Position Increase} (accountB);
+  \draw (ce) edge[bend left, above, left=0.3] node{\colorbox{black}{\textcolor{white}{\textbf{6}}} Amount Reserve} (accountA);
+  \draw (accountA) edge[below] node{\colorbox{black}{\textcolor{white}{\textbf{8}}} Increase of Liquidity Position} (accountB);
 
   % \node[align=center,below=of ce] (etc1) { {\Large \ldots } \small (on each site)};
   \draw[sequence,<->,loosely dashed] (ce) -- (tips);

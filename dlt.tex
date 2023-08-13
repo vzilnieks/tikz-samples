@@ -13,7 +13,7 @@
 \usepackage{bpmn-events}
 
 \usepackage{fontspec}
-  \setmainfont[Ligatures=TeX]{Nimbus Roman No9 L}
+  \setmainfont[Ligatures=TeX]{Times New Roman}
 
 \usepackage{graphicx}
 \graphicspath{{}{./assets/}}
@@ -39,11 +39,11 @@
   \node[below right=of bankA] (a3) at (2.9, -0.7) {};
   \node[below right=of bankA] (b1) at (2.9, -0.7) {};
   \node[task, below right=of bankA, fill=black!40] (b2) at (2.2, -0.4) {Block \\ Creator};
-  \draw (a1) edge[bend right] node{\colorbox{black}{\textcolor{white}{\textbf{2}}} Gossip of Transaction} (a2);
-  \draw (a1) edge[bend left] node{\colorbox{black}{\textcolor{white}{\textbf{2}}} Gossip of Transaction} (a3);
+  \draw (bankA) edge[bend right] node{\colorbox{black}{\textcolor{white}{\textbf{2}}} Transaction} (a2);
+  \draw (bankA) edge[bend left] node{\colorbox{black}{\textcolor{white}{\textbf{2}}} Transaction} (b2);
   \node[task, right=of bankA, fill=black!40] (bankB) at (7, 0) {Node B};
   \draw (bankB) edge[loop above] node{\colorbox{black}{\textcolor{white}{\textbf{4}}} Block/Ledger Verification} (bankB); 
-  \draw (b1) edge[bend left] node{\colorbox{black}{\textcolor{white}{\textbf{3}}} Gossip of Confirmed Block} (bankB);
+  \draw (b2) edge[bend left] node{\colorbox{black}{\textcolor{white}{\textbf{3}}} Confirmed Block} (bankB);
   \node[task, right=of bankB] (custB) {\includegraphics{account_box} \\ Customer B \\ Creditor};
   \draw (bankB) edge[bend right, below, pos=0.6] node{\colorbox{black}{\textcolor{white}{\textbf{5}}} Notification} (custB);
   \draw (bankB) edge[bend right, above, pos=0.6] node[opacity=0.5]{\includegraphics{iphone}} (custB);

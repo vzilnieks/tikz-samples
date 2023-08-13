@@ -14,6 +14,9 @@
 % \usepackage[dvipsnames]{xcolor}
 % \usepackage[usenames,dvipsnames]{color} %using the color package, not xcolor
 
+\usepackage{fontspec}
+  \setmainfont[Ligatures=TeX]{Times New Roman}
+
 \usepackage{graphicx}
 \graphicspath{{}{./assets/}}
 
@@ -26,7 +29,7 @@
   \tikzset{
     ->,
     >=stealth',
-    font={\fontsize{9pt}{12}\selectfont}
+    font={\fontsize{8pt}{12}\selectfont}
   }
 
   \clip (-0.8,-4) rectangle (15,4);
@@ -40,19 +43,19 @@
   \draw (bankA) edge[loop left, above=0.9] node{\colorbox{black}{\textcolor{white}{\textbf{2}}} AML/CTF} (bankA); 
   \draw (custA) edge[bend right, below, pos=0.4] node{\colorbox{black}{\textcolor{white}{\textbf{1}}} Initiation} (bankA);
   \node[right=of custA] (a1) {};
-  \node[above right=of bankA] (a2) at (2.9, 0.7) {};
+  \node[above right=of bankA] (a2) at (2.7, 0.7) {};
   \node[below right=of bankA] (a3) at (2.9, -0.7) {};
   \node[below right=of bankA] (b1) at (2.9, -0.7) {};
-  \node[task, below right=of bankA, fill=white!40] (b2) at (2.1, -0.3) {Bank \\ Authorized};
-  \draw (a1) edge[bend right] node{\colorbox{black}{\textcolor{white}{\textbf{3}}} Gossip of Transaction} (a2);
-  \draw (a1) edge[bend left] node{\colorbox{black}{\textcolor{white}{\textbf{3}}} Gossip of Transaction} (a3);
+  \node[task, below right=of bankA, fill=white!40] (b2) at (2.1, -0.3) {Authorized \\ Institution};
+  \draw (bankA) edge[bend right] node{\colorbox{black}{\textcolor{white}{\textbf{3}}} Transaction} (a2);
+  \draw (bankA) edge[bend left] node{\colorbox{black}{\textcolor{white}{\textbf{3}}} Transaction} (b2);
   \node[task, right=of bankA, fill=white!40] (bankB) at (7, 0) {\includegraphics{account_balance} \\ Bank M};
   \draw (bankB) edge[loop right, above=0.9] node{\colorbox{black}{\textcolor{white}{\textbf{5}}} AML/CTF} (bankB); 
   \node[above left=of bankB, opacity=0.3, above=0.5] (l2) {\includegraphics[scale=0.3]{bc}};
   \node[above left=of bankB, above=0.5] (sc12) {\includegraphics[scale=0.04]{smartc}};
   \node[above left=of bankB, above=1.1, opacity=0.5] (sc21) {\includegraphics[scale=0.04]{smartc}};
   \draw[<->] (custA) edge[bend left, above, color=black!40] node{L2 access} (l2);
-  \draw (b1) edge[bend left,pos=0.9] node{\colorbox{black}{\textcolor{white}{\textbf{4}}} Gossip of Confirmed Block} (l2);
+  \draw (b2) edge[bend left,pos=0.9] node{\colorbox{black}{\textcolor{white}{\textbf{4}}} Confirmed Block} (l2);
   \node[task, right=of bankB] (custB) {\includegraphics{account_box} \\ Merchant \\ Creditor};
   \draw[<->] (l2) edge[bend left, above, color=black!40] node{L2 access} (custB);
   % \draw (custA) edge[bend left, above, color=black!40] node{L2 channel} (custB);

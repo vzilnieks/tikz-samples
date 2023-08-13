@@ -27,7 +27,7 @@
   \tikzset{
     ->,
     >=stealth',
-    font={\fontsize{9pt}{12}\selectfont}
+    font={\fontsize{8pt}{12}\selectfont}
   }
 
   \node[task] (custA) {\includegraphics{account_box} \\ Customer \\ Debtor};
@@ -37,15 +37,15 @@
   \draw (custA) edge[bend right, below, pos=0.4] node{\colorbox{black}{\textcolor{white}{\textbf{1}}} Initiation} (bankA);
   \draw (custA) edge[bend right, above, pos=0.4] node[opacity=0.5]{\includegraphics{iphone}} (bankA);
   \node[right=of custA] (a1) {};
-  \node[above right=of bankA] (a2) at (2.9, 0.7) {};
+  \node[above right=of bankA] (a2) at (2.7, 0.7) {};
   \node[below right=of bankA] (a3) at (2.9, -0.7) {};
   \node[below right=of bankA] (b1) at (2.9, -0.7) {};
-  \node[task, below right=of bankA, fill=white!40] (b2) at (2.1, -0.3) {Bank \\ Authorized};
-  \draw (a1) edge[bend right] node{\colorbox{black}{\textcolor{white}{\textbf{3}}} Gossip of Transaction} (a2);
-  \draw (a1) edge[bend left] node{\colorbox{black}{\textcolor{white}{\textbf{3}}} Gossip of Transaction} (a3);
+  \node[task, below right=of bankA, fill=white!40] (b2) at (2.1, -0.3) {Authorized \\ Institution};
+  \draw (bankA) edge[bend right] node{\colorbox{black}{\textcolor{white}{\textbf{3}}} Transaction} (a2);
+  \draw (bankA) edge[bend left] node{\colorbox{black}{\textcolor{white}{\textbf{3}}} Transaction} (b2);
   \node[task, right=of bankA, fill=white!40] (bankB) at (7, 0) {\includegraphics{account_balance} \\ Bank M};
   \draw (bankB) edge[loop right, pos=0.1] node{\colorbox{black}{\textcolor{white}{\textbf{5}}} AML/CTF} (bankB); 
-  \draw (b1) edge[bend left] node{\colorbox{black}{\textcolor{white}{\textbf{4}}} Gossip of Confirmed Block} (bankB);
+  \draw (b2) edge[bend left] node{\colorbox{black}{\textcolor{white}{\textbf{4}}} Confirmed Block} (bankB);
   \node[task, right=of bankB] (custB) {\includegraphics{account_box} \\ Merchant \\ Creditor};
   \draw (bankB) edge[bend right, below, pos=0.6] node{\colorbox{black}{\textcolor{white}{\textbf{6}}} Notification} (custB);
   \draw (bankB) edge[bend right, above, pos=0.6] node[opacity=0.5]{\includegraphics{iphone}} (custB);

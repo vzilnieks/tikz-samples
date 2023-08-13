@@ -13,14 +13,14 @@
 \usepackage{bpmn-events}
 
 \usepackage{fontspec}
-  \setmainfont[Ligatures=TeX]{Nimbus Roman No9 L}
+  \setmainfont[Ligatures=TeX]{Times New Roman}
 
 \usepackage{graphicx}
 \graphicspath{{}{./assets/}}
 
 \begin{document}
 
-\begin{tikzpicture}[node distance=1.5cm]
+\begin{tikzpicture}[node distance=2cm]
 
   \tikzset{
     ->,
@@ -46,8 +46,8 @@
   \node[task, right=of bankB] (accountB) {Account of Bank B};
   \node[task, below=of accountB] (custB) {\includegraphics{account_box}};
   \draw (bankB) edge[bend right, below, right=0.1] node{\colorbox{gray}{\textcolor{white}{\textbf{11}}} Notification} (custB);
-  \draw (ce) edge[below] node{\colorbox{gray}{\textcolor{white}{\textbf{8}}} Reserve Amount} (accountA);
-  \draw (accountA) edge[below] node{\colorbox{gray}{\textcolor{white}{\textbf{10}}} Liquidity Position Increase} (accountB);
+  \draw (ce) edge[below] node{\colorbox{gray}{\textcolor{white}{\textbf{8}}} Amount Reserve} (accountA);
+  \draw (accountA) edge[below] node{\colorbox{gray}{\textcolor{white}{\textbf{10}}} Increase of Liquidity Position} (accountB);
 
 \end{tikzpicture}
 
