@@ -1,0 +1,31 @@
+\documentclass{article}
+
+\usepackage{tikz}
+  \usetikzlibrary{arrows}
+
+\usepackage{fontspec}
+  \setmainfont[Ligatures=TeX]{Times New Roman}
+
+\begin{document}
+\pagestyle{empty}
+
+\tikzstyle{int}=[draw, fill=blue!20, minimum size=2em]
+\tikzstyle{init} = [pin edge={to-,thin,black}]
+
+\begin{tikzpicture}[node distance=2.5cm,auto,>=latex']
+  \tikzset{
+    font={\fontsize{6pt}{6}\selectfont}
+  }
+    \node [int, pin={[init]above left:Block committed}] (a) {$\frac{1}{s}$};
+    \node (b) [left of=a,node distance=2cm, coordinate] {a};
+    \node [int, pin={[init]above left:$p_0$}] (c) [right of=a] {$\frac{1}{s}$};
+    \node [coordinate] (end) [right of=c, node distance=2cm]{};
+    \node [int, pin={[init]above left:$p_0$}, pin={[init]above right:a}] (r) [below of=a] {$\frac{1}{s}$};
+
+    \path[->] (b) edge node {$a$} (a);
+    \path[->] (a) edge node {$v$} (c);
+    \draw[->] (c) edge node {$p$} (end) ;
+    \path[->] (a) edge node {$a$} (r);
+\end{tikzpicture}
+
+\end{document}
