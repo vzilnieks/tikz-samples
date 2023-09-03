@@ -1,6 +1,4 @@
-% System Combination
-% Harish K Krishnamurthy <www.ece.neu.edu/~hkashyap/>
-\documentclass{article}
+\documentclass{standalone}
 
 \usepackage{tikz}
   \usetikzlibrary{positioning}
@@ -8,6 +6,9 @@
 \usepackage{amsmath,bm,times}
 \newcommand{\mx}[1]{\mathbf{\bm{#1}}} % Matrix command
 \newcommand{\vc}[1]{\mathbf{\bm{#1}}} % Vector command
+
+\usepackage{fontspec}
+  \setmainfont[Ligatures=TeX]{Times New Roman}
 
 \graphicspath{{}{./assets/}}
 
@@ -35,24 +36,65 @@
 
 \begin{tikzpicture}
     \node (source) {\includegraphics[width=5cm]{bc}};
-    \node (target) [right=of source] at (6,0) {\includegraphics[width=5cm]{bc}};
+    \node (target) [right=of source] at (7.3,0) {\includegraphics[width=5cm]{bc}};
     \path (source.east)+(3,1.6) node (asr1) [sensor] {Validator$_1$};
     \path (source.east)+(3,0.6) node (asr2)[sensor] {Validator$_2$};
     \path (source.east)+(3,-1.0) node (dots)[ann] {$\vdots$}; 
     \path (source.east)+(3,-2.0) node (asr3)[sensor] {Validator$_N$};    
-    \node (token1) at (1.9,1.6) {\includegraphics[width=1cm]{smartc}};
-    \node (event1) at (3.4,1.6) [event] {Deposit Event};
-    \node (token2) at (8,1.6) {\includegraphics[width=1cm]{smartc}};
+    \node[opacity=0.6] (token1) at (1.9,1.6) {\includegraphics[width=1cm]{smartc}};
+    \node[opacity=0.6] (token2) at (9,1.6) {\includegraphics[width=1cm]{smartc}};
    
+    % point over event1
+    \node (a1) at (3.4,2.6) {Emitted Events};
+    % point below block
+    \node (a2) at (3.4,-2.4) {};
+
+    % double thick line between a1 and a2 on underlayed
+    \path [draw, double, thick, ->] (a1) -- (a2);
+
+    \node (event1) at (3.4,1.6) [event] {Deposit Event};
+
+    % point over asr1
+    \node (b1) at (7.0,2.6) {};
+    % point below asr3
+    \node (b2) at (7.0,-2.4) {};
+    % \path [draw, double, thick, ->] (b1) -- (b2);
+
+    % background box under source and events
+    \begin{pgfonlayer}{background}
+				% Compute a few helper coordinates
+				\path (source.west |- source.north)+(-0.1,0.3) node (a) {};
+				\path (a2.east |- a2.south)+(+1.1,-0.3) node (b) {};
+				\path[rounded corners, draw=black!50, dashed]
+						(a) rectangle (b);
+				\end{pgfonlayer}
+    % name of the box
+    \node (boxtxt) at (-2,2.7) {\textbf{Source}};
     \path [draw, ->] (event1) -- node [above] {} (asr1.west);
-    \path [draw, ->] (asr1.east) -- node [above] {tx} (7.5,1.6) ;
+    \path [draw, ->] (asr1.east) -- node [above] {$tx_1$} (8.5,1.6) ;
     \path [draw, ->,dotted] (event1) -- node [above] {} (asr2.west);
-    \path [draw, ->,dotted] (asr2.east) -- node [above] {tx} (7.5,1.6) ;
+    \path [draw, ->,dotted] (asr2.east) -- node [above] {$tx_2$} (8.5,1.6) ;
     \path [draw, ->,dotted] (event1) -- node [above] {} (asr3.west);
-    \path [draw, ->,dotted] (asr3.east) -- node [above] {tx} (7.5,1.6) ;
+    \path [draw, ->,dotted] (asr3.east) -- node [above] {$tx_n$} (8.5,1.6) ;
 
+    % background box under target and b points
+    \begin{pgfonlayer}{background}
+      \path (b1.west |- b1.north)+(-0.1,0.3) node (a) {};
+      \path (target.east |- target.south)+(+0.5,-0.2) node (b) {};
+      \path[rounded corners, draw=black!50, dashed]
+				(a) rectangle (b);
+				\end{pgfonlayer}
 
-    \draw (token2) edge[loop above] node{Number of signs} (token2); 
+    % name of the box
+    \node (boxtxt2) at (13.3,2.7) {\textbf{Target}};
+
+    % \draw (token2) edge[loop above] node{Signature and Block} (token2); 
+    % text block with rounded corners over token2 with bullet steps
+    \node[draw, fill=white, rounded corners] at (9,2.3) {
+				Number of Signed Tx $>$ Threshold
+		};
+
+    % \draw (token2) edge[loop above] node{Number of signs} (token2); 
 
 \end{tikzpicture}
 
