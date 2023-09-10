@@ -3,16 +3,15 @@
 \usepackage{tikz}
   \usetikzlibrary{positioning}
   \usetikzlibrary{shapes,arrows,shadows}
-\usepackage{amsmath,bm,times}
-\newcommand{\mx}[1]{\mathbf{\bm{#1}}} % Matrix command
-\newcommand{\vc}[1]{\mathbf{\bm{#1}}} % Vector command
+% \usepackage{amsmath,bm,times}
+% \newcommand{\mx}[1]{\mathbf{\bm{#1}}} % Matrix command
+% \newcommand{\vc}[1]{\mathbf{\bm{#1}}} % Vector command
 
 \usepackage{fontspec}
   \setmainfont[Ligatures=TeX]{Times New Roman}
 
 \graphicspath{{}{./assets/}}
 
-\begin{document}
 % Define the layers to draw the diagram
 \pgfdeclarelayer{background}
 \pgfdeclarelayer{foreground}
@@ -30,29 +29,31 @@
 \tikzstyle{sc} = [sensor, text width=13em, fill=red!20, 
     minimum height=10em, rounded corners, drop shadow]
 
+\begin{document}
+
 % Define distances for bordering
-\def\blockdist{2.3}
-\def\edgedist{2.5}
+% \def\blockdist{2.3}
+% \def\edgedist{2.5}
 
 \begin{tikzpicture}
-    \node (source) {\includegraphics[width=5cm]{bc}};
-    \node (target) [right=of source] at (7.3,0) {\includegraphics[width=5cm]{bc}};
+  \node (source) {\includegraphics[height=5cm,trim={2.5cm 0 0 0},clip]{bc}};
+    \node (target) [right=of source] at (6.3,0) {\includegraphics[height=5cm,trim={0 0 2.5cm 0},clip]{bc}};
     \path (source.east)+(3,1.6) node (asr1) [sensor] {Validator$_1$};
     \path (source.east)+(3,0.6) node (asr2)[sensor] {Validator$_2$};
     \path (source.east)+(3,-1.0) node (dots)[ann] {$\vdots$}; 
     \path (source.east)+(3,-2.0) node (asr3)[sensor] {Validator$_N$};    
-    \node[opacity=0.6] (token1) at (1.9,1.6) {\includegraphics[width=1cm]{smartc}};
-    \node[opacity=0.6] (token2) at (9,1.6) {\includegraphics[width=1cm]{smartc}};
+    \node[opacity=0.6] (token1) at (1.0,1.6) {\includegraphics[width=1cm]{smartc}};
+    \node[opacity=0.6] (token2) at (8,1.6) {\includegraphics[width=1cm]{smartc}};
    
     % point over event1
-    \node (a1) at (3.4,2.6) {Emitted Events};
+    \node (a1) at (2.4,2.6) {Emitted Events};
     % point below block
-    \node (a2) at (3.4,-2.4) {};
+    \node (a2) at (2.4,-2.4) {};
 
     % double thick line between a1 and a2 on underlayed
     \path [draw, double, thick, ->] (a1) -- (a2);
 
-    \node (event1) at (3.4,1.6) [event] {Deposit Event};
+    \node (event1) at (2.4,1.6) [event] {Deposit Event};
 
     % point over asr1
     \node (b1) at (7.0,2.6) {};
@@ -69,13 +70,13 @@
 						(a) rectangle (b);
 				\end{pgfonlayer}
     % name of the box
-    \node (boxtxt) at (-2,2.7) {\textbf{Source}};
+    \node (boxtxt) at (-1.2,2.7) {\textbf{Source}};
     \path [draw, ->] (event1) -- node [above] {} (asr1.west);
-    \path [draw, ->] (asr1.east) -- node [above] {$tx_1$} (8.5,1.6) ;
+    \path [draw, ->] (asr1.east) -- node [above] {$tx_{s1}$} (7.5,1.6) ;
     \path [draw, ->,dotted] (event1) -- node [above] {} (asr2.west);
-    \path [draw, ->,dotted] (asr2.east) -- node [above] {$tx_2$} (8.5,1.6) ;
+    \path [draw, ->,dotted] (asr2.east) -- node [above] {$tx_{s2}$} (7.5,1.6) ;
     \path [draw, ->,dotted] (event1) -- node [above] {} (asr3.west);
-    \path [draw, ->,dotted] (asr3.east) -- node [above] {$tx_n$} (8.5,1.6) ;
+    \path [draw, ->,dotted] (asr3.east) -- node [above] {$tx_{sn}$} (7.5,1.6) ;
 
     % background box under target and b points
     \begin{pgfonlayer}{background}
@@ -86,7 +87,7 @@
 				\end{pgfonlayer}
 
     % name of the box
-    \node (boxtxt2) at (13.3,2.7) {\textbf{Target}};
+    \node (boxtxt2) at (10.7,2.7) {\textbf{Target}};
 
     % \draw (token2) edge[loop above] node{Signature and Block} (token2); 
     % text block with rounded corners over token2 with bullet steps

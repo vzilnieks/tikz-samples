@@ -29,11 +29,11 @@
 \tikzstyle{sc} = [sensor, text width=13em, fill=red!20, 
     minimum height=10em, rounded corners, drop shadow]
 
-\begin{document}
-
 % Define distances for bordering
-% \def\blockdist{2.3}
-% \def\edgedist{2.5}
+\def\blockdist{2.3}
+\def\edgedist{2.5}
+
+\begin{document}
 
 \begin{tikzpicture}
   \node (source) {\includegraphics[height=5cm,trim={2.5cm 0 0 0},clip]{bc}};
@@ -46,6 +46,8 @@
     \node[opacity=0.6] (token1) at (1.0,1.6) {\includegraphics[width=1cm]{smartc}};
     \node[opacity=0.6] (token2) at (8,1.6) {\includegraphics[width=1cm]{smartc}};
    
+    % \path (wa.east)+(\blockdist,0) node (vote) [sensor] {$\theta_0,\theta_1,...,\theta_M$\\Estimated Parameters};
+
     % point over event1
     \node (a1) at (2.4,2.6) {Emitted Events};
     % point below block
@@ -55,7 +57,7 @@
     \path [draw, double, thick, ->] (a1) -- (a2);
 
     \node (event1) at (2.4,1.6) [event] {Deposit Event};
-    \node (block) at (2.4,-1.4) [event] {Block Event};
+    \node (block) at (2.4,-1.4) [event] {zk-Proof Event};
 
     % point over asr1
     \node (b1) at (7.0,2.6) {};
@@ -77,19 +79,19 @@
 				(asr1.west);
     \path [draw, ->] (block) -- node [above] {} 
 				(asr1.west);
-    \path [draw,double, ->] (asr1.east) -- node [above] {$tx_n$, $b_k$} (7.5,1.6) ;
+    \path [draw, double, ->] (asr1.east) -- node [above] {$tx_n$, $p_k$} (7.5,1.6) ;
 
     \path [draw, ->,dotted] (event1) -- node [above] {} 
 				(asr2.west);
     \path [draw, ->,dotted] (block) -- node [above] {} 
 				(asr2.west);
-    \path [draw,double, ->,dotted] (asr2.east) -- node [above] {$tx_n$, $b_k$} (7.5,1.6) ;
+    \path [draw,double, ->,dotted] (asr2.east) -- node [above] {$tx_n$, $p_k$} (7.5,1.6) ;
 
     \path [draw, ->,dotted] (event1) -- node [above] {} 
 				(asr3.west);
     \path [draw, ->,dotted] (block) -- node [above] {} 
 				(asr3.west);
-    \path [draw,double, ->,dotted] (asr3.east) -- node [above] {$tx_n$, $b_k$} (7.5,1.6) ;
+    \path [draw,double, ->,dotted] (asr3.east) -- node [above] {$tx_n$, $p_k$} (7.5,1.6) ;
 
     % background box under target and b points
     \begin{pgfonlayer}{background}
@@ -104,9 +106,8 @@
 
     % \draw (token2) edge[loop above] node{Signature and Block} (token2); 
     % text block with rounded corners over token2 with bullet steps
-    \node[draw, fill=white, rounded corners, text width=4.7cm] at (9,2.3) {
-				Signature Valid $\wedge$ 
-				Block Valid
+    \node[draw, fill=white, rounded corners, text width=3.6cm] at (9,2.3) {
+				Transaction Approoved 
 		};
 
 \end{tikzpicture}
