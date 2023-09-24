@@ -33,7 +33,7 @@
     \node (b) [left of=a,node distance=1.5cm] {};
     \node [int, pin={[init]above left:Block committed}, pin={[init]below right:Error}] (c) [right of=a] {DEPOSIT};
     \node [int, pin={[init]above left:Block committed}, pin={[init]below right:Error}] (d) [right of=c] {PROOF};
-    \node [int, pin={[init]above left:T AND B AND P}, pin={[init]below right:a}] (e) [right of=d] {TARGET};
+    \node [int, pin={[init]above left:Proof verified}, pin={[init]below right:a}] (e) [right of=d] {TARGET};
     \node [int, pin={[init]above left:Block committed}, pin={[init]below right:Error}] (f) [right of=e] {MINT};
     \node [] (end) [right of=f, node distance=1.5cm]{};
 
@@ -61,8 +61,9 @@
     \path[->] (e) edge node {} (r2);
     \path[->] (f) edge node {q} (r2);
     % \path[->] (r2) edge node {} (r4);
-    \path[->] (r2) edge[bend left,pos=0.6] node {\colorbox{black}{\textcolor{white}{\textbf{!}}}} (r0);
+    \path[->] (r2) edge node {\colorbox{black}{\textcolor{white}{\textbf{!}}}} (r0);
     \path[->] (r2) edge node {} (r3);
+    \path[->] (r3) edge node {\colorbox{black}{\textcolor{white}{\textbf{!}}}} (r0);
 
 
     % block on background of init, error and undo
